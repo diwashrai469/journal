@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:get/get.dart';
 import 'package:journey/common/widgets/k_snackbar.dart';
 import '../../../../core/services/intercepters.dart';
 import '../../../../core/services/local_storage.dart';
@@ -18,14 +19,12 @@ Future userLogin(String email, String password) async {
 
     kSnackbar("Sucess", loginResponse.message, true);
     LocalStorageService()
-        .write(LocalStorageKeys.accessToken, loginResponse.accessToken);
-    LocalStorageService()
-        .write(LocalStorageKeys.refreshToken, loginResponse.refreshToken);
+        .write(LocalStorageKeys.accessToken, loginResponse.acessToken);
 
-//navigation
+    Get.offAllNamed('/dashboard');
     return loginResponse;
   } on DioException catch (error) {
     kSnackbar(
-        "Login Failed", error.response?.data['errors'][0]['message'], false);
+        "Login Failed", error.response?.data['error'], false);
   }
 }

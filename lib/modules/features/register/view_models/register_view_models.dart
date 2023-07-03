@@ -1,5 +1,5 @@
 import 'package:journey/modules/data/common/base_model.dart';
-import 'package:journey/modules/data/login/services/login_services.dart';
+import 'package:journey/modules/data/register/services/register_services.dart';
 
 class RegisterViewModel extends BaseModel {
   String? fullName(String? fullname) {
@@ -30,9 +30,25 @@ class RegisterViewModel extends BaseModel {
     return null;
   }
 
-  Future<void> loginUser(String email, String password) async {
+  String? confirmPasswordval(String? confirmpassword) {
+    if (confirmpassword == null || confirmpassword.isEmpty) {
+      return "Confirm password is required";
+    }
+
+    return null;
+  }
+
+  Future<void> registerUser(
+      {required String email,
+      required String password,
+      required String confirmPassword,
+      required String fullName}) async {
     setLoading(true);
-    await userLogin(email, password);
+    await userRegistration(
+        confirmPassword: confirmPassword,
+        email: email,
+        fullName: fullName,
+        password: password);
     setLoading(false);
   }
 }

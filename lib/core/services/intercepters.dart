@@ -3,7 +3,7 @@ import 'local_storage.dart';
 
 Dio getDioInstance() {
   Dio dio = Dio(
-    BaseOptions(baseUrl: "https://api.dynocrm.com/api/v1/"),
+    BaseOptions(baseUrl: "http://192.168.1.71:8000/api/v1/"),
   );
 
   dio.interceptors.add(

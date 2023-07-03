@@ -16,85 +16,94 @@ class LoginView extends StatelessWidget {
     final emailController = TextEditingController();
     final passwordController = TextEditingController();
 
-    return Scaffold(
-      body: Padding(
-        padding: AppDimens.mainPagePadding,
-        child: Form(
-          key: formkey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              RichText(
-                text: TextSpan(
-                  text: "Evo",
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyMedium
-                      ?.copyWith(fontWeight: FontWeight.w600, fontSize: 35),
-                  children: <TextSpan>[
-                    TextSpan(
-                      text: 'Log',
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: Colors.teal,
-                          fontSize: 30,
-                          fontWeight: FontWeight.w600),
+    return SafeArea(
+      child: Scaffold(
+        body: Padding(
+          padding: AppDimens.mainPagePadding,
+          child: Form(
+            key: formkey,
+            child: Center(
+              child: SingleChildScrollView(
+                physics: const ClampingScrollPhysics(),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    RichText(
+                      text: TextSpan(
+                        text: "Evo",
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            fontWeight: FontWeight.w600, fontSize: 35),
+                        children: <TextSpan>[
+                          TextSpan(
+                            text: 'Log',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(
+                                    color: Colors.teal,
+                                    fontSize: 30,
+                                    fontWeight: FontWeight.w600),
+                          ),
+                        ],
+                      ),
                     ),
+                    elHeightSpan,
+                    KTextFormField(
+                      controller: emailController,
+                      hint: "Enter your email.",
+                      keyboardType: TextInputType.emailAddress,
+                      label: "Email",
+                      validator: controller.emailvalidator,
+                    ),
+                    lHeightSpan,
+                    KTextFormField(
+                      keyboardType: TextInputType.visiblePassword,
+                      controller: passwordController,
+                      validator: controller.passwordvalidator,
+                      obscureText: true,
+                      hint: "Enter your password.",
+                      label: "Password",
+                    ),
+                    elHeightSpan,
+                    Obx(
+                      () => KButton(
+                        size: ButtonSize.medium,
+                        isBusy: controller.isLoading,
+                        onPressed: () async {
+                          FocusManager.instance.primaryFocus?.unfocus();
+                          if (formkey.currentState!.validate()) {
+                            await controller.loginUser(
+                                emailController.text, passwordController.text);
+                          }
+                        },
+                        child: const Text("Login"),
+                      ),
+                    ),
+                    lHeightSpan,
+                    InkWell(
+                      onTap: () => Get.toNamed(
+                        "/register",
+                      ),
+                      child: RichText(
+                        text: TextSpan(
+                          text: "Don't have a account yet?",
+                          style: Theme.of(context).textTheme.bodyMedium,
+                          children: <TextSpan>[
+                            TextSpan(
+                              text: '  Create one',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium
+                                  ?.copyWith(color: Colors.teal),
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
                   ],
                 ),
               ),
-              elHeightSpan,
-              KTextFormField(
-                controller: emailController,
-                hint: "Enter your email.",
-                keyboardType: TextInputType.emailAddress,
-                label: "Email",
-                validator: controller.emailvalidator,
-              ),
-              lHeightSpan,
-              KTextFormField(
-                keyboardType: TextInputType.visiblePassword,
-                controller: passwordController,
-                validator: controller.passwordvalidator,
-                obscureText: true,
-                hint: "Enter your password.",
-                label: "Password",
-              ),
-              elHeightSpan,
-              Obx(
-                () => KButton(
-                  size: ButtonSize.medium,
-                  isBusy: controller.isLoading,
-                  onPressed: () async {
-                    if (formkey.currentState!.validate()) {
-                      await controller.loginUser(
-                          emailController.text, passwordController.text);
-                    }
-                  },
-                  child: const Text("Login"),
-                ),
-              ),
-              lHeightSpan,
-              InkWell(
-                onTap: () => Get.toNamed(
-                  "/register",
-                ),
-                child: RichText(
-                  text: TextSpan(
-                    text: "Don't have a account yet?",
-                    style: Theme.of(context).textTheme.bodyMedium,
-                    children: <TextSpan>[
-                      TextSpan(
-                        text: '  Create one',
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyMedium
-                            ?.copyWith(color: Colors.teal),
-                      ),
-                    ],
-                  ),
-                ),
-              )
-            ],
+            ),
           ),
         ),
       ),

@@ -1,9 +1,9 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:journey/common/constant/app_dimens.dart';
 import 'package:journey/common/constant/ui_helpers.dart';
 import 'package:journey/common/widgets/k_button.dart';
-import 'package:journey/common/widgets/k_dialog.dart';
 import 'package:lottie/lottie.dart';
 
 class OnboardingView extends StatelessWidget {
@@ -17,7 +17,6 @@ class OnboardingView extends StatelessWidget {
         child: Column(
           children: [
             elHeightSpan,
-            lHeightSpan,
             RichText(
               text: TextSpan(
                 text: "Evo",
@@ -36,19 +35,41 @@ class OnboardingView extends StatelessWidget {
                 ],
               ),
             ),
+            //   AnimatedTextKit(
+            //   animatedTexts: [
+            //     WavyAnimatedText(
+            //       'EvoLog',
+            //       textStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
+            //             fontWeight: FontWeight.w600,
+            //             fontSize: 35,
+            //           ),
+            //     ),
+            //   ],
+            //   repeatForever: true,
+            //   pause: Duration(milliseconds: 100),
+            //   displayFullTextOnTap: true,
+            // ),
             elHeightSpan,
             Lottie.asset(
               'asset/lotti/cycle.json',
             ),
             lHeightSpan,
-            Text(
-              "Reflective Journeys: Your Path to Self-Discovery",
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 22,
-                  ),
-            ),
+            AnimatedTextKit(animatedTexts: [
+              ColorizeAnimatedText(
+                  " Reflective Journeys: Your Path to Self-Discovery",
+                  textStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 22,
+                      ),
+                  speed: Duration(milliseconds: 100),
+                  colors: [
+                    Colors.green,
+                    Colors.white,
+                    Colors.blue,
+                    Colors.grey
+                  ],
+                  textAlign: TextAlign.center)
+            ], isRepeatingAnimation: true, repeatForever: true),
             mHeightSpan,
             Text(
               "Welcome to our journal app, where every thought finds its place. Capture your moments, express your thoughts, and embark on a journey of self-discovery. Let your words flow, and let this journal be your sanctuary. Happy journaling!",
@@ -62,7 +83,25 @@ class OnboardingView extends StatelessWidget {
             mHeightSpan,
             KButton(
               size: ButtonSize.medium,
-              child: const Text("Get Started"),
+              child: Row(
+                children: [
+                  AnimatedTextKit(
+                      repeatForever: true,
+                      onTap: () => Get.toNamed(
+                            "/login",
+                          ),
+                      animatedTexts: [
+                        TypewriterAnimatedText('Get Started',
+                            curve: Curves.easeIn,
+                            speed: const Duration(milliseconds: 80)),
+                      ]),
+                  mWidthSpan,
+                  const Icon(
+                    Icons.arrow_forward,
+                    color: Colors.white,
+                  )
+                ],
+              ),
               onPressed: () => Get.toNamed(
                 "/login",
               ),
